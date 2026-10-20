@@ -120,7 +120,7 @@
       const u = String(url);
       let m;
       if (u.endsWith("/v3/create-web-call")) return authed("/api/create-web-call", init);
-      if ((m = u.match(//v2/stop-call/(call_[A-Za-z0-9]+)$/))) return authed(`/api/stop-call?id=${m[1]}`, init);
+      if ((m = u.match(/\/v2\/stop-call\/(call_[A-Za-z0-9]+)$/))) return authed(`/api/stop-call?id=${m[1]}`, init);
       return Promise.reject(new Error("Not available in the demo: " + u));
     },
   });
