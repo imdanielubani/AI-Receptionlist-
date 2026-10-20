@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice Test</title>
+<style>
+  :root {
+    --bg: #f6f5f2; --panel: #ffffff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e4e2dc;
+    --orb-a: #5b8cff; --orb-b: #9b6bff; --ring: rgba(91, 140, 255, .28);
+    --ok: #1f8a4c; --bad: #c2362f; --btn: #1d1d1f; --btn-ink: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111114; --panel: #1a1a1f; --ink: #f2f2f4; --muted: #9a9aa3; --line: #2a2a31;
+      --orb-a: #6f9bff; --orb-b: #b086ff; --ring: rgba(111, 155, 255, .30);
+      --ok: #4cc27f; --bad: #ff6b62; --btn: #f2f2f4; --btn-ink: #111114;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { text-align: center; }
+  h1 { font-size: 22px; margin: 0; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 13px; margin-top: 2px; font-family: ui-monospace, monospace; }
+  .stage { display: grid; place-items: center; height: 340px; position: relative; }
+  .ring, .orb { position: absolute; border-radius: 50%; transition: transform 90ms linear; }
+  .ring { width: 230px; height: 230px; background: var(--ring); }
+  .orb { width: 180px; height: 180px; background: radial-gradient(circle at 32% 30%, #fff8 0, transparent 38%), linear-gradient(135deg, var(--orb-a), var(--orb-b)); box-shadow: 0 20px 60px -20px var(--orb-b); cursor: pointer; }
+  .orb.idle { animation: breathe 3.2s ease-in-out infinite; }
+  .orb.connecting { animation: breathe 0.9s ease-in-out infinite; }
+  @keyframes breathe { 50% { transform: scale(1.04); } }
+  @media (prefers-reduced-motion: reduce) { .orb.idle, .orb.connecting { animation: none; } }
+  .status { text-align: center; font-weight: 600; min-height: 24px; }
+  .hint { text-align: center; color: var(--muted); font-size: 13px; min-height: 20px; }
+  .controls { display: flex; gap: 10px; justify-content: center; margin: 18px 0 28px; flex-wrap: wrap; }
+  button { font: inherit; border: 1px solid var(--line); background: var(--panel); color: var(--ink); padding: 9px 18px; border-radius: 999px; cursor: pointer; }
+  button.primary { background: var(--btn); color: var(--btn-ink); border-color: var(--btn); }
+  button:disabled { opacity: .4; cursor: default; }
+  details, .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-top: 14px; }
+  summary { cursor: pointer; font-weight: 600; }
+  textarea { width: 100%; min-height: 90px; margin-top: 10px; font: 13px ui-monospace, monospace; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 10px 0; }
+  .stat { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+  .stat b { display: block; font-size: 18px; }
+  .stat span { color: var(--muted); font-size: 12px; }
+  .turn { padding: 6px 0; border-top: 1px solid var(--line); }
+  .turn:first-child { border-top: 0; }
+  .who { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .tool { font: 12px ui-monospace, monospace; color: var(--muted); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .ok { color: var(--ok); } .bad { color: var(--bad); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 id="title">Voice test</h1>
+    <div class="sub" id="agent"></div>
+  </header>
+
+  <div class="card" id="lock" style="text-align:center">
+    <p><b>Enter the demo password</b></p>
+    <input id="pw" type="password" autocomplete="current-password" style="font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%;max-width:260px">
+    <div style="margin-top:10px"><button class="primary" id="unlock">Unlock</button></div>
+    <p class="muted" id="lockmsg"></p>
+  </div>
+
+  <div class="stage">
+    <div class="ring" id="ring"></div>
+    <div class="orb idle" id="orb" role="button" aria-label="Start call" tabindex="0"></div>
+  </div>
+  <div class="status" id="status">Tap the orb to call</div>
+  <div class="hint" id="hint">Uses your microphone. Calls bill at normal Retell rates.</div>
+
+  <div class="controls">
+    <button class="primary" id="start">Start call</button>
+    <button id="mute" disabled>Mute</button>
+    <button id="end" disabled>End call</button>
+  </div>
+
+  <details>
+    <summary>Test variables</summary>
+    <p class="muted">Optional JSON of dynamic variables for this call, e.g. force after-hours with <code>{"current_hour": "22", "current_time": "Monday, October 19, 2026 at 10:00 PM WAT"}</code>.</p>
+    <textarea id="vars" spellcheck="false" placeholder="{}"></textarea>
+  </details>
+
+  <div id="results"></div>
+</main>
+
+<script type="module">
+  import { RetellClient } from "https://cdn.jsdelivr.net/npm/retell-client-js-sdk@3.0.2/+esm";
+
+  const $ = (id) => document.getElementById(id);
+  const cfg = await (await fetch("/api/config")).json();
+  let password = "";
+  try { password = sessionStorage.getItem("demo_pw") || ""; } catch {}
+  const showLock = (msg = "") => { $("lock").style.display = ""; $("lockmsg").textContent = msg; };
+  const hideLock = () => { $("lock").style.display = "none"; };
+  password ? hideLock() : showLock();
+  $("unlock").onclick = () => {
+    password = $("pw").value;
+    try { sessionStorage.setItem("demo_pw", password); } catch {}
+    hideLock();
+  };
+  $("pw").onkeydown = (e) => { if (e.key === "Enter") $("unlock").click(); };
+  const authed = async (url, init = {}) => {
+    const r = await fetch(url, { ...init, headers: { ...(init.headers || {}), "x-demo-password": password } });
+    if (r.status === 401) { try { sessionStorage.removeItem("demo_pw"); } catch {} showLock("Wrong password, please try again."); }
+    return r;
+  };
+  $("title").textContent = cfg.title;
+  $("agent").textContent = "Demo receptionist";
+  document.title = `${cfg.title} · Voice Test`;
+
+  // The SDK's REST calls go to the local server, which holds the real key.
+  const client = new RetellClient({
+    key: "local-proxy",
+    fetch: (url, init) => {
+      const u = String(url);
+      let m;
+      if (u.endsWith("/v3/create-web-call")) return authed("/api/create-web-call", init);
+      if ((m = u.match(//v2/stop-call/(call_[A-Za-z0-9]+)$/))) return authed(`/api/stop-call?id=${m[1]}`, init);
+      return Promise.reject(new Error("Not available in the demo: " + u));
+    },
+  });
+
+  let call = null, micStream = null, micAnalyser = null, raf = 0, agentLevel = 0;
+
+  const level = (buf) => { let s = 0; for (let i = 0; i < buf.length; i++) s += buf[i] * buf[i]; return Math.sqrt(s / buf.length); };
+
+  function setState(state, text, hint = "") {
+    $("orb").className = "orb " + state;
+    $("status").textContent = text;
+    $("hint").textContent = hint;
+    const live = state === "live" || state === "connecting";
+    $("start").disabled = live; $("end").disabled = !live; $("mute").disabled = state !== "live";
+  }
+
+  function animate() {
+    const buf = new Float32Array(1024);
+    let mic = 0;
+    if (micAnalyser) { micAnalyser.getFloatTimeDomainData(buf); mic = level(buf); }
+    $("orb").style.transform = `scale(${1 + Math.min(agentLevel * 4, 0.45)})`;
+    $("ring").style.transform = `scale(${1 + Math.min(mic * 5, 0.5)})`;
+    raf = requestAnimationFrame(animate);
+  }
+
+  async function startMicMeter() {
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const ctx = new AudioContext();
+      micAnalyser = ctx.createAnalyser();
+      micAnalyser.fftSize = 1024;
+      ctx.createMediaStreamSource(micStream).connect(micAnalyser);
+    } catch { /* the call itself reports mic errors */ }
+  }
+
+  function stopMeters() {
+    cancelAnimationFrame(raf);
+    micStream?.getTracks().forEach((t) => t.stop());
+    micStream = null; micAnalyser = null; agentLevel = 0;
+    $("orb").style.transform = ""; $("ring").style.transform = "";
+  }
+
+  function start() {
+    if (call && call.status !== "ended") return;
+    if (!password) { showLock("Enter the password first."); return; }
+    let vars;
+    try { vars = $("vars").value.trim() ? JSON.parse($("vars").value) : undefined; }
+    catch { setState("idle", "Test variables aren't valid JSON"); return; }
+    $("results").innerHTML = "";
+    setState("connecting", "Connecting…");
+    startMicMeter();
+    animate();
+    call = client.createWebCall({
+      agent_id: "set-on-server",
+      ...(vars ? { retell_llm_dynamic_variables: vars } : {}),
+      audio: { emitRawAudioSamples: true },
+      hooks: {
+        onStatus: (s) => { if (s === "live") setState("live", "Live: say hello", "The orb moves with the agent's voice; the ring with yours."); },
+        onAudio: (samples) => { agentLevel = level(samples); },
+        onAgentStartTalking: () => { $("status").textContent = "Agent speaking"; },
+        onAgentStopTalking: () => { $("status").textContent = "Listening"; },
+        onError: (e) => { setState("idle", "Call error", e.message); },
+        onEnd: () => { const id = call?.callId; stopMeters(); setState("idle", "Call ended", "Fetching results…"); if (id) showResults(id); },
+      },
+    });
+  }
+
+  async function showResults(callId) {
+    const box = $("results");
+    for (let i = 0; i < 30; i++) {
+      const r = await authed(`/api/call?id=${callId}`);
+      const c = await r.json();
+      if (!r.ok) { box.innerHTML = `<div class="card bad">Couldn't load results: ${esc(c.error || r.status)}</div>`; return; }
+      render(callId, c, !c.call_analysis);
+      if (c.call_analysis) { $("hint").textContent = ""; return; }
+      await new Promise((ok) => setTimeout(ok, 3000));
+    }
+    $("hint").textContent = "Analysis still pending; check the Retell dashboard.";
+  }
+
+  function render(callId, c, pending) {
+    const e2e = c.latency?.e2e || {}, llm = c.latency?.llm || {}, tts = c.latency?.tts || {};
+    const ms = (v) => (v == null ? "—" : `${Math.round(v)} ms`);
+    const a = c.call_analysis || {};
+    const turns = (c.transcript_with_tool_calls || c.transcript_object || []).map((t) => {
+      if (t.role === "agent" || t.role === "user") return `<div class="turn"><div class="who">${t.role === "agent" ? "Agent" : "You"}</div>${esc(t.content)}</div>`;
+      if (t.role === "tool_call_invocation") return `<div class="turn tool">→ ${esc(t.name)}(${esc(t.arguments)})</div>`;
+      if (t.role === "tool_call_result") return `<div class="turn tool">← ${esc(String(t.content).slice(0, 400))}</div>`;
+      return "";
+    }).join("");
+    $("results").innerHTML = `
+      <div class="card">
+        <div class="muted">${esc(callId)} · ${esc(c.disconnection_reason || c.call_status || "")}</div>
+        <div class="grid">
+          <div class="stat"><b>${c.duration_ms ? Math.round(c.duration_ms / 1000) + " s" : "—"}</b><span>duration</span></div>
+          <div class="stat"><b class="${e2e.p50 > 2500 ? "bad" : "ok"}">${ms(e2e.p50)}</b><span>response time p50 (target &lt; 2500)</span></div>
+          <div class="stat"><b>${ms(e2e.p90)}</b><span>response time p90</span></div>
+          <div class="stat"><b>${ms(llm.p50)}</b><span>LLM p50</span></div>
+          <div class="stat"><b>${ms(tts.p50)}</b><span>voice p50</span></div>
+        </div>
+        ${pending ? `<p class="muted">Call analysis pending…</p>` : `
+          <p><b>Summary:</b> ${esc(a.call_summary || "—")}</p>
+          <p><b>Call successful:</b> <span class="${a.call_successful ? "ok" : "bad"}">${a.call_successful ?? "—"}</span>
+             · <b>Sentiment:</b> ${esc(a.user_sentiment || "—")}</p>
+          ${a.custom_analysis_data ? `<p><b>Extracted:</b></p><div class="tool">${esc(JSON.stringify(a.custom_analysis_data, null, 2))}</div>` : ""}`}
+      </div>
+      <div class="card"><b>Transcript</b>${turns || `<p class="muted">No transcript.</p>`}</div>`;
+  }
+
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+
+  $("start").onclick = start;
+  $("orb").onclick = () => (call && call.status !== "ended" ? null : start());
+  $("orb").onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") start(); };
+  $("end").onclick = () => call?.end();
+  $("mute").onclick = () => {
+    const muted = $("mute").textContent === "Unmute";
+    muted ? call.unmute() : call.mute();
+    $("mute").textContent = muted ? "Mute" : "Unmute";
+  };
+</script>
+</body>
+</html>

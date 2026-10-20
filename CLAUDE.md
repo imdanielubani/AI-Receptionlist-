@@ -108,6 +108,8 @@ CLAUDE.md                 this file
 scripts/mcp-headers.mjs   reads a key from .env for MCP auth
 scripts/docs-snapshot.mjs snapshots a platform's docs and diffs them against the last run
 scripts/voice-test/       local voice-orb test page: node scripts/voice-test/server.mjs <client-slug>
+demo/                     password-protected Vercel version of the test page (Vercel Root Directory = demo;
+                          env: RETELL_API_KEY, RETELL_AGENT_ID, DEMO_PASSWORD, DEMO_TITLE)
 clients/
   _template/              copy this for each new client
   <client-slug>/
