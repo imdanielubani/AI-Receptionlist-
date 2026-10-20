@@ -1,0 +1,6 @@
+{
+  "llms_txt": "https://docs.retellai.com/llms.txt",
+  "llms_full_txt": "https://docs.retellai.com/llms-full.txt",
+  "openapi": "https://docs.retellai.com/openapi.yaml",
+  "change_notices_prefix": "https://docs.retellai.com/deprecation-notice/"
+}

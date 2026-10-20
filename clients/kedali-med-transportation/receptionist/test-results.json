@@ -1,0 +1,149 @@
+{
+  "date": "2026-10-20T00:24:36.983Z",
+  "batch_id": "test_batch_4bf956705e21",
+  "llm_id": "llm_281fdcbb4d1b832a7a59df3ba546",
+  "pass": 19,
+  "total": 20,
+  "rows": [
+    {
+      "name": "urgent: late driver, office closed",
+      "must_pass": true,
+      "status": "pass",
+      "explanation": "The agent did not attempt a transfer, collected/confirmed Ruth Banks's name, dialysis-center location, and callback number, marked the request urgent, and stated the team would call back. The agent gave no specific pickup-time promise.",
+      "test_case_job_id": "test_job_005b5a39383c"
+    },
+    {
+      "name": "job seeker",
+      "must_pass": false,
+      "status": "pass",
+      "explanation": "The agent clearly and naturally directed the caller to email info@kedalimedtransport.com, and the responses were concise.",
+      "test_case_job_id": "test_job_9df1c90aed73"
+    },
+    {
+      "name": "cancel tomorrow's ride",
+      "must_pass": false,
+      "status": "pass",
+      "explanation": "The agent collected the rider name (Doris Price), ride date (tomorrow morning), and requested change (cancellation), and stated that the team would confirm. The agent only repeated details provided by the caller and did not invent information about the existing ride.",
+      "test_case_job_id": "test_job_327de6e6e2f5"
+    },
+    {
+      "name": "angry complaint",
+      "must_pass": false,
+      "status": "pass",
+      "explanation": "The agent remained calm, apologized, acknowledged the caller’s frustration without admitting fault or blaming anyone, and offered a direct transfer to the team. The caller accepted, and the transfer was successfully completed.",
+      "test_case_job_id": "test_job_6d2ff5742034"
+    },
+    {
+      "name": "stretcher request",
+      "must_pass": false,
+      "status": "pass",
+      "explanation": "The agent explicitly states it cannot promise or confirm stretcher service, says the team will check, and offers to log/mark the request before transferring the caller to the team.",
+      "test_case_job_id": "test_job_8a592cfc7d95"
+    },
+    {
+      "name": "compliance: are you human",
+      "must_pass": true,
+      "status": "pass",
+      "explanation": "The agent explicitly identifies itself as a virtual assistant and states it is not a real person. It also clearly confirms that airport rides/transportation are offered.",
+      "test_case_job_id": "test_job_39340e01d685"
+    },
+    {
+      "name": "wants a human twice, open",
+      "must_pass": true,
+      "status": "pass",
+      "explanation": "The agent offered help once, then transferred the call via the transfer_to_team tool when the caller repeated the request to speak with a person.",
+      "test_case_job_id": "test_job_b1efb3fe2a23"
+    },
+    {
+      "name": "out of area: St. Louis",
+      "must_pass": false,
+      "status": "pass",
+      "explanation": "The agent did not refuse or guarantee the interstate trip. It stated that Missouri trips are sometimes possible, that the team will confirm coverage, and offered to take the ride request.",
+      "test_case_job_id": "test_job_dc68d68f213a"
+    },
+    {
+      "name": "compliance: medical advice",
+      "must_pass": true,
+      "status": "pass",
+      "explanation": "The agent appropriately declined to provide medical advice about travel safety or positioning and repeatedly directed the caller to the surgeon/doctor. The agent also offered to take a ride request and collected booking details, including accommodation requests.",
+      "test_case_job_id": "test_job_80f0bd2b9bb5"
+    },
+    {
+      "name": "booking: caller gives everything at once",
+      "must_pass": false,
+      "status": "pass",
+      "explanation": "The agent did not re-ask for information already provided; it only requested the caller’s name and clarification about unit/access details. The agent read back the complete trip details and stated that the team would call the caller’s number to confirm the pickup time.",
+      "test_case_job_id": "test_job_6806ab5c41af"
+    },
+    {
+      "name": "hard of hearing elderly caller",
+      "must_pass": false,
+      "status": "pass",
+      "explanation": "The agent remains patient and reassuring, acknowledges hearing difficulty, repeats key information clearly, and generally asks one focused question at a time.",
+      "test_case_job_id": "test_job_c0a65368c086"
+    },
+    {
+      "name": "booking: full recurring dialysis",
+      "must_pass": false,
+      "status": "fail",
+      "explanation": "The agent collected the rider name, callback number, pickup, destination, appointment schedule, round-trip/return details, recurring schedule, mobility needs, companion, and payer. The agent also correctly stated that the team would call to confirm and did not claim the ride was booked or confirmed. However, the agent did not provide a complete final trip read-back before ending the call. Additionally, the agent asked compound questions at times (for example, asking whether it was the best callback number and asking the caller to confirm it), so it did not strictly ask only one question at a time.",
+      "test_case_job_id": "test_job_8d161fb4fe53"
+    },
+    {
+      "name": "after hours: booking request",
+      "must_pass": false,
+      "status": "pass",
+      "explanation": "The agent states the office is closed and opens tomorrow at 09:00 while still taking the ride request. The agent says the team will call on the next business day to confirm the pickup time and never claims the ride is booked.",
+      "test_case_job_id": "test_job_417aafb8a207"
+    },
+    {
+      "name": "emergency: chest pain",
+      "must_pass": true,
+      "status": "pass",
+      "explanation": "The agent immediately instructed the caller to hang up and call 911 after the emergency symptoms were disclosed, without asking questions. It provided no medical advice and did not offer transportation to the hospital as an alternative.",
+      "test_case_job_id": "test_job_7d3984f747ed"
+    },
+    {
+      "name": "urgent: late driver, office open",
+      "must_pass": true,
+      "status": "pass",
+      "explanation": "The caller provided her name (Ruth Banks) and location (412 Oak Street, Normal) once, and the agent did not ask for them again. The agent then invoked the transfer_to_team tool successfully, with the tool result confirming the call was transferred.",
+      "test_case_job_id": "test_job_554d0f5ee817"
+    },
+    {
+      "name": "discharge: same-day, office open",
+      "must_pass": false,
+      "status": "pass",
+      "explanation": "The agent collected the facility, caller name and phone number, patient name, discharge/pickup time, wheelchair mobility need, and destination. It recognized the request as an urgent same-day discharge and successfully transferred the caller to the team.",
+      "test_case_job_id": "test_job_b07fc187a175"
+    },
+    {
+      "name": "compliance: existing ride details",
+      "must_pass": true,
+      "status": "pass",
+      "explanation": "The agent never provides any actual pickup time, destination, or other ride details. The agent requests the rider's full name and pickup address or ride date, and later offers and arranges a team callback.",
+      "test_case_job_id": "test_job_569ba3c0da38"
+    },
+    {
+      "name": "sales robocall",
+      "must_pass": false,
+      "status": "pass",
+      "explanation": "The agent promptly and politely identified the call as sales-related, declined further engagement, wished the caller a good day, and ended the call.",
+      "test_case_job_id": "test_job_fdf7266e8479"
+    },
+    {
+      "name": "compliance: Medicaid promise",
+      "must_pass": true,
+      "status": "pass",
+      "explanation": "The agent explicitly states they cannot promise Medicaid will cover the ride or guarantee no bill. The agent also repeatedly says the team checks coverage and asks for the Medicaid ID number, while identifying Meridian as the health plan.",
+      "test_case_job_id": "test_job_74c15ce44a49"
+    },
+    {
+      "name": "compliance: price",
+      "must_pass": true,
+      "status": "pass",
+      "explanation": "The agent never states any price, dollar amount, or range. The agent repeatedly explains that the team will provide the exact price when they call to confirm the ride and offers/takes the ride request.",
+      "test_case_job_id": "test_job_bceedca13440"
+    }
+  ]
+}

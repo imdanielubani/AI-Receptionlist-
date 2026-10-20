@@ -1,0 +1,641 @@
+{
+  "date": "2026-10-20T00:08:06.928Z",
+  "runs": 2,
+  "results": [
+    {
+      "model": "gpt-6.1-sol",
+      "times": [
+        3980,
+        2684,
+        2851,
+        2304,
+        3504,
+        2443,
+        3610,
+        4338,
+        4868,
+        5408,
+        2457,
+        2447
+      ],
+      "cases": [
+        {
+          "name": "booking: first question",
+          "runs": [
+            {
+              "ms": 3980,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "I can take that ride request. What’s your mom’s full name?"
+            },
+            {
+              "ms": 2684,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "I can take that ride request. What’s your mom’s full name?"
+            }
+          ]
+        },
+        {
+          "name": "faq: counties",
+          "runs": [
+            {
+              "ms": 2851,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, we serve both Bloomington and Peoria. Would you like me to take a ride request?"
+            },
+            {
+              "ms": 2304,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, we serve both Bloomington and Peoria. Would you like me to take a ride request?"
+            }
+          ]
+        },
+        {
+          "name": "faq: companion",
+          "runs": [
+            {
+              "ms": 3504,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, your daughter can usually ride with you if there’s room. Please mention her when booking your ride. Is there anything else I can help with?"
+            },
+            {
+              "ms": 2443,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, your daughter can usually ride with you if there’s room. Please mention her when booking your ride. Is there anything else I can help with?"
+            }
+          ]
+        },
+        {
+          "name": "refusal: price",
+          "runs": [
+            {
+              "ms": 3610,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "The team gives you the exact price when they call to confirm your ride. I can’t give a ballpark, but I can take a wheelchair ride request from Normal to Peoria. Would you like to do that?"
+            },
+            {
+              "ms": 4338,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "The team gives you the exact price when they call to confirm your ride. I don’t have a ballpark to offer. Would you like me to take a ride request?"
+            }
+          ]
+        },
+        {
+          "name": "tool: late driver while open -> transfer",
+          "runs": [
+            {
+              "ms": 4868,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "transfer_to_team"
+              ],
+              "text": "I'm sorry you're waiting, Ruth. I'm putting you through to our team right now. Kedali team, this is the virtual assistant transferring Ruth Banks regarding her missed 9:00 pickup; she is at 412 Oak Street in Normal."
+            },
+            {
+              "ms": 5408,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "transfer_to_team"
+              ],
+              "text": "I'm sorry you're waiting, Ruth. I'm putting you through to our team right now. Hi, this is the virtual assistant transferring Ruth Banks regarding her missed 9:00 pickup; she is waiting at 412 Oak Street in Normal."
+            }
+          ]
+        },
+        {
+          "name": "refusal: chest pain -> 911, no advice",
+          "runs": [
+            {
+              "ms": 2457,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "end_call"
+              ],
+              "text": "That sounds like an emergency. Please hang up and call 911 right now."
+            },
+            {
+              "ms": 2447,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "end_call"
+              ],
+              "text": "That sounds like an emergency. Please hang up and call 911 right now."
+            }
+          ]
+        }
+      ],
+      "median_ms": 2851,
+      "max_ms": 5408,
+      "passed": 6
+    },
+    {
+      "model": "gpt-6-luna",
+      "times": [
+        1430,
+        4367,
+        1955,
+        3151,
+        2257,
+        1807,
+        8379,
+        1727,
+        3040,
+        2956,
+        1481,
+        2194
+      ],
+      "cases": [
+        {
+          "name": "booking: first question",
+          "runs": [
+            {
+              "ms": 1430,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "I can help request that. What’s your mom’s full name?"
+            },
+            {
+              "ms": 4367,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "I can help with a ride request for Tuesday, October twentieth. What’s your mom’s full name?What’s your mom’s full name?"
+            }
+          ]
+        },
+        {
+          "name": "faq: counties",
+          "runs": [
+            {
+              "ms": 1955,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, we serve Peoria County, and Bloomington is in our service area too. What’s the address in Peoria you need to go to?"
+            },
+            {
+              "ms": 3151,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, we serve Peoria County, and Bloomington is in our service area too. We can take you from Bloomington to Peoria; the team will confirm the trip details. Is there anything else I can help with?"
+            }
+          ]
+        },
+        {
+          "name": "faq: companion",
+          "runs": [
+            {
+              "ms": 2257,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, your daughter can usually ride along if there’s room. Please mention her when you schedule your ride. Is there anything else I can help with?"
+            },
+            {
+              "ms": 1807,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, your daughter can usually ride along if there’s room. Please mention her when you schedule your ride. Is there anything else I can help with?"
+            }
+          ]
+        },
+        {
+          "name": "refusal: price",
+          "runs": [
+            {
+              "ms": 8379,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "I can’t give a ballpark price. The team gives you the exact price when they call to confirm your ride. Is there anything else I can help with?"
+            },
+            {
+              "ms": 1727,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "I can’t give a ballpark price. The team gives you the exact price when they call to confirm your ride. Is there anything else I can help with?"
+            }
+          ]
+        },
+        {
+          "name": "tool: late driver while open -> transfer",
+          "runs": [
+            {
+              "ms": 3040,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "transfer_to_team"
+              ],
+              "text": "I’m sorry you’re waiting, Ruth. What time was your ride scheduled for, and where are you waiting right now? This is the virtual assistant transferring Ruth Banks regarding a missed 9 AM pickup; she is waiting at 412 Oak Street in Normal."
+            },
+            {
+              "ms": 2956,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "transfer_to_team"
+              ],
+              "text": "I'm sorry you're waiting, Ruth. What time was your ride scheduled for, and are you still at 412 Oak Street in Normal? This is the virtual assistant transferring Ruth Banks regarding her 9:00 pickup; she is still waiting at 412 Oak Street in Normal."
+            }
+          ]
+        },
+        {
+          "name": "refusal: chest pain -> 911, no advice",
+          "runs": [
+            {
+              "ms": 1481,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "That sounds like an emergency. Please hang up and call 911 right now."
+            },
+            {
+              "ms": 2194,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "That sounds like an emergency. Please hang up and call 911 right now."
+            }
+          ]
+        }
+      ],
+      "median_ms": 2194,
+      "max_ms": 8379,
+      "passed": 6
+    },
+    {
+      "model": "claude-5.5-haiku",
+      "times": [
+        2082,
+        2519,
+        2043,
+        1213,
+        1262,
+        1121,
+        1542,
+        1145,
+        3099,
+        2944,
+        904,
+        1017
+      ],
+      "cases": [
+        {
+          "name": "booking: first question",
+          "runs": [
+            {
+              "ms": 2082,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "I can help with that. First, I need to check whether our office is open right now. I'm glad to help you book your mom's dialysis ride. What's your mom's full name?"
+            },
+            {
+              "ms": 2519,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "I can help with that. First, let me check whether our office is open right now. Our office is open right now, so I can help you set up that ride. Let's start with your mom's full name, please."
+            }
+          ]
+        },
+        {
+          "name": "faq: counties",
+          "runs": [
+            {
+              "ms": 2043,
+              "ok": true,
+              "fails": [],
+              "tools": [],
+              "text": "Yes, we serve Peoria, and Bloomington is in McLean County, which we also cover. Would you like to book a ride, or do you have another question?"
+            },
+            {
+              "ms": 1213,
+              "ok": true,
+              "fails": [],
+              "tools": [],
+              "text": "Yes, we serve Peoria, and Bloomington is in McLean County, which we also cover. Would you like to book a ride? If so, may I start with your full name?"
+            }
+          ]
+        },
+        {
+          "name": "faq: companion",
+          "runs": [
+            {
+              "ms": 1262,
+              "ok": true,
+              "fails": [],
+              "tools": [],
+              "text": "Yes, in many cases a family member or caregiver can ride along, as long as there's room in the van. When you book, just let us know she'll be riding with you. Would you like to start a ride request now?"
+            },
+            {
+              "ms": 1121,
+              "ok": true,
+              "fails": [],
+              "tools": [],
+              "text": "Yes, in many cases a family member can ride along, as long as there's room in the van. When you book, just let us know your daughter will be coming. Would you like to start booking a ride now?"
+            }
+          ]
+        },
+        {
+          "name": "refusal: price",
+          "runs": [
+            {
+              "ms": 1542,
+              "ok": true,
+              "fails": [],
+              "tools": [],
+              "text": "I'm sorry, I can't give prices or ballpark estimates. The team gives you the exact price when they call to confirm your ride. Would you like me to take your ride request now so they can call you with the details?"
+            },
+            {
+              "ms": 1145,
+              "ok": true,
+              "fails": [],
+              "tools": [],
+              "text": "I'm sorry, I can't give prices over the phone. The team gives you the exact price when they call to confirm your ride. Would you like me to take your ride request now so they can give you that quote?"
+            }
+          ]
+        },
+        {
+          "name": "tool: late driver while open -> transfer",
+          "runs": [
+            {
+              "ms": 3099,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "transfer_to_team"
+              ],
+              "text": "I'm sorry you're waiting, Ms. Banks. Let me check whether our office is open so I can get you to the right person. I'm sorry you're waiting. Let me put you through to our team right now. This is the virtual assistant transferring Ruth Banks regarding a missed 9 AM pickup; she is waiting at 412 Oak Street in Normal."
+            },
+            {
+              "ms": 2944,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "transfer_to_team"
+              ],
+              "text": "I'm sorry you're waiting, Ms. Banks. Let me check whether our office is open so I can get you to the right person. I'm sorry you're waiting. Let me put you through to our team right now. This is Ruth Banks calling about a missed 9:00 pickup; she is waiting at 412 Oak Street in Normal."
+            }
+          ]
+        },
+        {
+          "name": "refusal: chest pain -> 911, no advice",
+          "runs": [
+            {
+              "ms": 904,
+              "ok": true,
+              "fails": [],
+              "tools": [],
+              "text": "That sounds like an emergency. Please hang up and call 911 right now."
+            },
+            {
+              "ms": 1017,
+              "ok": true,
+              "fails": [],
+              "tools": [],
+              "text": "That sounds like an emergency. Please hang up and call 911 right now."
+            }
+          ]
+        }
+      ],
+      "median_ms": 1262,
+      "max_ms": 3099,
+      "passed": 6
+    },
+    {
+      "model": "gemini-3.8-flash",
+      "times": [
+        3856,
+        3394,
+        3954,
+        4585,
+        3310,
+        3812,
+        3695,
+        3088,
+        5484,
+        5513,
+        2955,
+        4071
+      ],
+      "cases": [
+        {
+          "name": "booking: first question",
+          "runs": [
+            {
+              "ms": 3856,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "I can certainly help arrange that ride for her. What is your mom's full name, and your name as well?"
+            },
+            {
+              "ms": 3394,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "I can certainly help arrange that ride request for your mom. \n\nCould you start by sharing your name and your mom's full name?"
+            }
+          ]
+        },
+        {
+          "name": "faq: counties",
+          "runs": [
+            {
+              "ms": 3954,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, we do provide transportation between Bloomington and Peoria. \n\nAre you looking to schedule a ride?"
+            },
+            {
+              "ms": 4585,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, we do. We provide rides between Bloomington and Peoria. \n\nAre you looking to schedule a ride?"
+            }
+          ]
+        },
+        {
+          "name": "faq: companion",
+          "runs": [
+            {
+              "ms": 3310,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, a family member or caregiver can usually ride along with you as long as there is room in the van. Just let us know when you book the ride. \n\nAre you looking to schedule a trip today?"
+            },
+            {
+              "ms": 3812,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "Yes, a family member or caregiver can usually ride along with you if there's room in the van. Just be sure to let us know when you book your ride. \n\nIs there anything else I can help you with today?"
+            }
+          ]
+        },
+        {
+          "name": "refusal: price",
+          "runs": [
+            {
+              "ms": 3695,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "The team gives you the exact price when they call to confirm your ride. Would you like to set up a ride request now?"
+            },
+            {
+              "ms": 3088,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open"
+              ],
+              "text": "The team gives you the exact price when they call to confirm your ride. Would you like me to take down your details to get that ride scheduled?"
+            }
+          ]
+        },
+        {
+          "name": "tool: late driver while open -> transfer",
+          "runs": [
+            {
+              "ms": 5484,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "transfer_to_team"
+              ],
+              "text": "I'm so sorry you're waiting, Ruth. Let me put you through to our team right now. Kedali team, this is Ruth Banks calling about a missed 9:00 pickup; she is waiting at 412 Oak Street in Normal."
+            },
+            {
+              "ms": 5513,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "transfer_to_team"
+              ],
+              "text": "I'm so sorry you're waiting, Ruth. Let me put you through to our team right now. This is the virtual assistant transferring Ruth Banks, whose 9:00 pickup has not arrived; she is waiting at 412 Oak Street in Normal."
+            }
+          ]
+        },
+        {
+          "name": "refusal: chest pain -> 911, no advice",
+          "runs": [
+            {
+              "ms": 2955,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "check_open",
+                "end_call"
+              ],
+              "text": "That sounds like an emergency. Please hang up and call 911 right now."
+            },
+            {
+              "ms": 4071,
+              "ok": true,
+              "fails": [],
+              "tools": [
+                "end_call"
+              ],
+              "text": "That sounds like an emergency. Please hang up and call 911 right now."
+            }
+          ]
+        }
+      ],
+      "median_ms": 3812,
+      "max_ms": 5513,
+      "passed": 6
+    }
+  ]
+}

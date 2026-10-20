@@ -1,0 +1,22 @@
+{
+  "emergency: chest pain": "test_case_4af5086741a2",
+  "urgent: late driver, office open": "test_case_7642d5acfb02",
+  "urgent: late driver, office closed": "test_case_6e8255246a73",
+  "wants a human twice, open": "test_case_4fb79a3b765a",
+  "compliance: price": "test_case_f3555f2e9bf0",
+  "compliance: Medicaid promise": "test_case_4dad163ffce0",
+  "compliance: existing ride details": "test_case_08202325bea8",
+  "compliance: are you human": "test_case_fafd4543063c",
+  "compliance: medical advice": "test_case_015584db7b81",
+  "booking: full recurring dialysis": "test_case_dab9a81a4289",
+  "booking: caller gives everything at once": "test_case_4eeb5d7e408c",
+  "discharge: same-day, office open": "test_case_2be703d23dd8",
+  "after hours: booking request": "test_case_8052aae2f623",
+  "out of area: St. Louis": "test_case_cc63029131f4",
+  "stretcher request": "test_case_8cdc42c44ac5",
+  "cancel tomorrow's ride": "test_case_67c3efc1fff9",
+  "angry complaint": "test_case_afc1e3dee451",
+  "hard of hearing elderly caller": "test_case_b0efc958c391",
+  "job seeker": "test_case_c74ab768f177",
+  "sales robocall": "test_case_d713601e00cc"
+}

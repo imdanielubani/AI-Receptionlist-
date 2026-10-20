@@ -1,0 +1,207 @@
+{
+  "agent_name": "Kedali Med Transportation Receptionist",
+  "voice_id": "retell-Grace",
+  "language": "en-US",
+  "timezone": "America/Chicago",
+  "end_call_after_silence_ms": 30000,
+  "max_call_duration_ms": 1200000,
+  "responsiveness": 0.8,
+  "interruption_sensitivity": 0.8,
+  "data_storage_setting": "everything_except_pii",
+  "pre_session_tools": [
+    {
+      "type": "code",
+      "name": "check_open",
+      "description": "Works out whether the office is open right now and when it next opens.",
+      "code": "const hours = JSON.parse(dv.business_hours_json || \"{}\");\nconst holidays = JSON.parse(dv.holidays_json || \"[]\");\nconst now = dv.current_time;\nconst hour = Number(dv.current_hour);\nconst keys = [\"sun\", \"mon\", \"tue\", \"wed\", \"thu\", \"fri\", \"sat\"];\nconst names = [\"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\", \"Saturday\"];\nconst today = names.findIndex((n) => now.startsWith(n));\nconst toH = (t) => { const [h, m] = t.split(\":\").map(Number); return h + m / 60; };\nconst isHoliday = holidays.some((h) => new RegExp(`\\\\b${h},`).test(now));\nconst ranges = isHoliday ? [] : hours[keys[today]] || [];\nconst open = ranges.some(([a, b]) => hour >= toH(a) && hour < toH(b));\nlet next = null;\nconst later = ranges.find(([a]) => toH(a) > hour);\nif (later) next = `today at ${later[0]}`;\nfor (let i = 1; !next && i <= 7; i++) {\n  const r = hours[keys[(today + i) % 7]] || [];\n  if (r.length) next = `${i === 1 ? \"tomorrow\" : names[(today + i) % 7]} at ${r[0][0]}`;\n}\nreturn { open, holiday: isHoliday, next_open: next || \"soon\" };",
+      "timeout_ms": 5000,
+      "response_variables": {
+        "office_open": "open",
+        "next_open": "next_open"
+      }
+    }
+  ],
+  "boosted_keywords": [
+    "Kedali",
+    "Normal",
+    "Bloomington",
+    "Peoria",
+    "Champaign",
+    "Springfield",
+    "Urbana",
+    "Pekin",
+    "Decatur",
+    "dialysis",
+    "Medicaid",
+    "ModivCare",
+    "MTM",
+    "McLean",
+    "Tazewell",
+    "Livingston",
+    "LaSalle",
+    "Sangamon",
+    "Logan",
+    "Macon",
+    "Piatt",
+    "Ford",
+    "Cook",
+    "Will",
+    "wheelchair"
+  ],
+  "post_call_analysis_data": [
+    {
+      "type": "boolean",
+      "name": "trip_request",
+      "description": "True if the caller asked to book a new ride."
+    },
+    {
+      "type": "string",
+      "name": "rider_name",
+      "description": "Full name of the person riding."
+    },
+    {
+      "type": "string",
+      "name": "caller_name",
+      "description": "Name of the caller if different from the rider, with relationship or facility (e.g. 'Mary, daughter' or 'Jo, case manager at OSF')."
+    },
+    {
+      "type": "string",
+      "name": "callback_number",
+      "description": "Best callback number the caller confirmed."
+    },
+    {
+      "type": "string",
+      "name": "pickup_address",
+      "description": "Pickup address including unit and driver notes."
+    },
+    {
+      "type": "string",
+      "name": "destination",
+      "description": "Destination name and address."
+    },
+    {
+      "type": "string",
+      "name": "appointment_datetime",
+      "description": "Appointment date and time as stated, plus the actual date."
+    },
+    {
+      "type": "enum",
+      "name": "trip_type",
+      "description": "Kind of trip requested.",
+      "choices": [
+        "one_way",
+        "round_trip_set_time",
+        "round_trip_will_call",
+        "not_applicable"
+      ]
+    },
+    {
+      "type": "string",
+      "name": "recurring",
+      "description": "Recurring schedule if any (e.g. 'dialysis Mon/Wed/Fri'), else empty."
+    },
+    {
+      "type": "enum",
+      "name": "mobility",
+      "description": "Rider mobility.",
+      "choices": [
+        "walks",
+        "cane_or_walker",
+        "own_wheelchair_manual",
+        "own_wheelchair_power",
+        "scooter",
+        "stretcher_requested",
+        "other",
+        "unknown"
+      ]
+    },
+    {
+      "type": "string",
+      "name": "companions",
+      "description": "Who rides along, if anyone."
+    },
+    {
+      "type": "enum",
+      "name": "payer",
+      "description": "How the ride will be paid.",
+      "choices": [
+        "medicaid",
+        "private_pay",
+        "facility",
+        "unknown"
+      ]
+    },
+    {
+      "type": "string",
+      "name": "medicaid_plan",
+      "description": "Health plan name if Medicaid."
+    },
+    {
+      "type": "string",
+      "name": "special_needs",
+      "description": "Oxygen, help to the door, stairs, sedation, or other notes."
+    },
+    {
+      "type": "boolean",
+      "name": "urgent",
+      "description": "True for: rider waiting or late driver, ready for pickup, same-day discharge, same-day ride or same-day cancellation, or a complaint about a current ride."
+    },
+    {
+      "type": "enum",
+      "name": "urgent_reason",
+      "description": "Why it's urgent.",
+      "choices": [
+        "none",
+        "rider_waiting",
+        "late_driver",
+        "will_call_ready",
+        "discharge_today",
+        "same_day_ride",
+        "same_day_cancel",
+        "complaint",
+        "other"
+      ]
+    },
+    {
+      "type": "enum",
+      "name": "booking_change",
+      "description": "Change to an existing ride.",
+      "choices": [
+        "none",
+        "cancel",
+        "reschedule",
+        "other"
+      ]
+    },
+    {
+      "type": "string",
+      "name": "change_details",
+      "description": "Details of the change requested."
+    },
+    {
+      "type": "boolean",
+      "name": "message_taken",
+      "description": "True if a message or callback request was taken."
+    },
+    {
+      "type": "string",
+      "name": "reason",
+      "description": "One-sentence reason for the call."
+    },
+    {
+      "type": "string",
+      "name": "unanswered_question",
+      "description": "Any question the assistant couldn't answer."
+    },
+    {
+      "type": "boolean",
+      "name": "transferred",
+      "description": "True if the call was transferred to the team."
+    },
+    {
+      "type": "boolean",
+      "name": "emergency",
+      "description": "True if the caller was told to call 911."
+    }
+  ]
+}
